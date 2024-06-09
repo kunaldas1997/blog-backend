@@ -1,0 +1,6 @@
+{
+    "configuration": {
+        "mongoURL": "mongodb+srv://kunaldas1107:54sOgIPBMzozWrqc@cluster0.2ehv9l3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+        "jwt_token": "7f53d9f20f09b79cbe89c70e17e4bb32f553a621"
+    }
+}
