@@ -7,10 +7,10 @@ import mongoose from "mongoose";
 export const getPosts = expressAsyncHandler(async (req, res) => {
   try {
 
-    const posts = await Post.find().populate({ path: 'post_author', select: '-name -password' }).populate('post_category');
+    const posts = (await Post.find().populate({ path: 'post_author', select: '-name -password' }).populate('post_category')).reverse('publish_date');
     if (posts.length === 0) {
       res.status(204).json({ message: 'No posts found' });
-      UploadTestData();
+
     } else {
       res.json(posts);
     }
@@ -92,7 +92,7 @@ export const setPost = expressAsyncHandler(async (req, res) => {
         post_category: new mongoose.Types.ObjectId(categoryExists)
       });
 
-      res.status(201).json(post);
+      res.status(201).json({ message: "Post Added Succesfully" });
     }
     else {
       res.status(403).json({ message: "Not Authorized" });
@@ -129,7 +129,7 @@ export const updatePost = expressAsyncHandler(async (req, res) => {
       }
       post.publish_date = Date.now();
       await post.save();
-      res.send(post);
+      res.send({ message: "Post Updated Succesfully" });
     }
   } catch (err) {
     res.status(404).send({ error: err });
@@ -140,7 +140,6 @@ export const deletePost = expressAsyncHandler(async (req, res) => {
   try {
     let token = req.headers.authorization;
     if (token) {
-
       const data = await CompareJWT(token.split(" ")[1]);
       const authorExists = await Author.findById(data);
       if (!authorExists) {

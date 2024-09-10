@@ -48,7 +48,7 @@ export const getUser = expressAsyncHandler(async (req, res) => {
         let token = req.headers.authorization;
         if (token) {
             const data = await CompareJWT(token.split(" ")[1]);
-            const user = await Author.findById(data).populate({ select: "-password" });
+            const user = await Author.findById(data).populate({ select: "-password " });
             if (!user || !(await bcrypt.compare(password, user.password))) {
                 return res.status(401).json({ error: "Please Check your data" });
             }
@@ -63,7 +63,7 @@ export const getUser = expressAsyncHandler(async (req, res) => {
 
             token = GenerateJWT(user._id);
 
-            res.json({ user, token });
+            res.json({token });
         }
 
 
@@ -73,5 +73,6 @@ export const getUser = expressAsyncHandler(async (req, res) => {
         return res.status(500).json({ error: "Internal server error" });
     }
 });
+
 export const updateeUser = expressAsyncHandler(async (req, res) => { });
 export const deleteUser = expressAsyncHandler(async (req, res) => { }); 
